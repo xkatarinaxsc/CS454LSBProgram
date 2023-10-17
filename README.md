@@ -1,2 +1,2 @@
 # CS454LSBProgram
-CS$%$ group project 
+CS454 group project 

@@ -1,9 +1,22 @@
+from PIL import Image
+
+
+# Convert image to 24-bit BMP
+def convert_to_bmp(image_path):
+    # Open the image
+    with Image.open(image_path) as img:
+        # Convert the image to 24-bit BMP format
+        img = img.convert('RGB')
+
+        # Save the converted BMP image
+        img.save('../images/converted_image.bmp')
 
 
 # Encryption Menu Option
 def menu_option_1():
     print("Please input the secret message you want to encrypt: ")
     secret_message = input("Message: ")
+    convert_to_bmp('../images/image.jpeg')
 
 #    binary_text = convert_string_to_binary(secret_message)
 #    print(binary_text)

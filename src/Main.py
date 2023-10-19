@@ -27,7 +27,17 @@ def menu_option_1():
 # Decryption Menu Option
 def menu_option_2():
     print("File name for the image you want to decrypt: ")
-    secret_message = input("File Name: ")
+    file_name = input("File Name: ")
+
+
+
+def hide_secret_message(bin_msg, bmp_img, encrypted_img_name):
+
+
+
+
+
+
 
 
 # Converts a text string into a binary string
@@ -48,11 +58,21 @@ def convert_binary_to_string(binary_msg):
         decimal_value = int(temp_bin, 2)
         msg_text = msg_text + chr(decimal_value)
 
-
-
-
-#   print(msg_text)
     return msg_text
+
+
+# Check the string will fit into the image
+def size_check(bmp_img, bin_msg):
+     width, height = bmp_img.size
+     total_pixels = width * height
+
+     req_pixels = len(bin_msg)
+
+     if req_pixels < total_pixels:
+         return 1
+     else:
+         return 0
+
 
 
 if __name__ == "__main__":

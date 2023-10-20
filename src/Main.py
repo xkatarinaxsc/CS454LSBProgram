@@ -17,12 +17,23 @@ def convert_to_bmp(image_path):
 def menu_option_1():
     print("Please input the secret message you want to encrypt: ")
     secret_message = input("Message: ")
-    convert_to_bmp('../images/image.jpeg')
 
-#    binary_text = convert_string_to_binary(secret_message)
-#    print(binary_text)
-#    decrypt_msg = convert_binary_to_string(binary_text)
-#   print(decrypt_msg)
+    # does user pick img? via img path or name?
+    convert_to_bmp('../images/image.jpeg')
+    bin_msg = convert_string_to_binary(secret_message)
+    image = Image.open("../images/converted_image.bmp")
+
+    if size_check(image, bin_msg) == 1:
+        print("What do you want to save the encoded image as?")
+        encoded_img_name = input(" : ")
+
+
+
+    else:
+        print("Message too long, please try again")
+
+
+
 
 
 # Decryption Menu Option
@@ -31,14 +42,23 @@ def menu_option_2():
     file_name = input("File Name: ")
 
 
+# LSB implementation to hide message within image
+def hide_secret_message(bin_msg, bmp_img, encoded_img_name):
 
-def hide_secret_message(bin_msg, bmp_img, encrypted_img_name):
+    # converts the bmp image into an array
     pixel_array = np.array(list(bmp_img.getdata()))
     total_pixels = pixel_array.size//3
 
+    index = 0
+    for x in range(total_pixels):
+        for y in range(3):
+            if index < len(bin_msg):
+                bit = int(bin_msg[index])
 
+                index += 1
 
-
+            else:
+                break
 
 
 

@@ -2,6 +2,7 @@ from PIL import Image
 import numpy as np
 
 
+
 # Convert image to 24-bit BMP
 def convert_to_bmp(image_path):
     # Open the image
@@ -24,21 +25,17 @@ def menu_option_1():
     image = Image.open("../images/converted_image.bmp")
 
     if size_check(image, bin_msg) == 1:
-        print("What do you want to save the encoded image as?")
+        print("What do you want to save the stego image as?")
         encoded_img_name = input(" : ")
-
-
+        hide_secret_message(bin_msg, image, encoded_img_name)
 
     else:
-        print("Message too long, please try again")
-
-
-
+        print("ERROR: Message too long, please try again")
 
 
 # Decryption Menu Option
 def menu_option_2():
-    print("File name for the image you want to decrypt: ")
+    print("File name for the stego image you want to decrypt: ")
     file_name = input("File Name: ")
 
 
@@ -47,33 +44,45 @@ def hide_secret_message(bin_msg, bmp_img, encoded_img_name):
 
     # converts the bmp image into an array
     pixel_array = np.array(list(bmp_img.getdata()))
-    total_pixels = pixel_array.size//3
+    width, height = bmp_img.size
 
+    # file and user inputted name for stego image saving
+    image_directory = "../images/" + encoded_img_name + ".jpeg"
+
+    # loops through each column of each row of pixels within the image
     index = 0
-    for x in range(total_pixels):
-        for y in range(3):
-            if index < len(bin_msg):
-                bit = int(bin_msg[index])
+    for w in range(width):
+        for h in range(height):
+            pixel = list(bmp_img.getpixel((w, h)))
 
-                index += 1
+            # Adjusts each R, G, B channel
+            for RGB_channel in range(3):
+                if index < len(bin_msg):
+                    msg_bit = int(bin_msg[index])
+                    # Finds the LSB by performing bitwise operation
+                    pixel[RGB_channel] &= ~0x1
+                    # Bitwise operation OR with 0x1 to change LSB
+                    pixel[RGB_channel] |= msg_bit
 
-            else:
-                break
+                    index += 1
+                else:
+                    break
 
+        pixel_array = pixel_array.reshape((height, width, 3))
+        enc_img = Image.fromarray(np.uint8(pixel_array))
 
-
-
+        enc_img.save(image_directory)
 
 
 # Converts a text string into a binary string
 def convert_string_to_binary(msg_text):
     binary_text = ''
+    # Adding a delimiter
+    msg_text += "$Hq73Op"
+
     for char in msg_text:
         binary_char = format(ord(char), '08b')
         binary_text += binary_char
-
-    # Adding a delimiter
-    binary_text += "$Hq73Op"
 
     return binary_text
 
@@ -100,7 +109,6 @@ def size_check(bmp_img, bin_msg):
         return 1
     else:
         return 0
-
 
 
 if __name__ == "__main__":

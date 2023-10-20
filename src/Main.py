@@ -24,7 +24,7 @@ def menu_option_1():
     image = Image.open("../images/converted_image.bmp")
 
     if size_check(image, bin_msg) == 1:
-        print("What do you want to save the encoded image as?")
+        print("What do you want to save the stego image as?")
         encoded_img_name = input(" : ")
 
 
@@ -33,12 +33,9 @@ def menu_option_1():
         print("ERROR: Message too long, please try again")
 
 
-
-
-
 # Decryption Menu Option
 def menu_option_2():
-    print("File name for the image you want to decrypt: ")
+    print("File name for the stego image you want to decrypt: ")
     file_name = input("File Name: ")
 
 
@@ -47,6 +44,7 @@ def hide_secret_message(bin_msg, bmp_img, encoded_img_name):
 
     # converts the bmp image into an array
     pixel_array = np.array(list(bmp_img.getdata()))
+    width, height = bmp_img.size
     total_pixels = pixel_array.size//3
 
     index = 0
@@ -59,6 +57,11 @@ def hide_secret_message(bin_msg, bmp_img, encoded_img_name):
                 index += 1
             else:
                 break
+
+        pixel_array = pixel_array.reshape((height, width, 3))
+        enc_img = Image.fromarray(pixel_array.astype('uint8'))
+
+        enc_img.save('../images/stego_image.jpeg')
 
 
 # Converts a text string into a binary string

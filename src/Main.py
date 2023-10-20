@@ -1,6 +1,6 @@
 from PIL import Image
 import numpy as np
-import pathlib
+
 
 
 # Convert image to 24-bit BMP
@@ -23,7 +23,6 @@ def menu_option_1():
     convert_to_bmp('../images/image.jpeg')
     bin_msg = convert_string_to_binary(secret_message)
     image = Image.open("../images/converted_image.bmp")
-
 
     if size_check(image, bin_msg) == 1:
         print("What do you want to save the stego image as?")
@@ -62,7 +61,7 @@ def hide_secret_message(bin_msg, bmp_img, encoded_img_name):
                     msg_bit = int(bin_msg[index])
                     # Finds the LSB by performing bitwise operation
                     pixel[RGB_channel] &= ~0x1
-                    # Bitwise operation OR with 0x1 to change LSB 
+                    # Bitwise operation OR with 0x1 to change LSB
                     pixel[RGB_channel] |= msg_bit
 
                     index += 1
@@ -75,8 +74,7 @@ def hide_secret_message(bin_msg, bmp_img, encoded_img_name):
         enc_img.save(image_directory)
 
 
-
-        # Converts a text string into a binary string
+# Converts a text string into a binary string
 def convert_string_to_binary(msg_text):
     binary_text = ''
     # Adding a delimiter
@@ -85,7 +83,6 @@ def convert_string_to_binary(msg_text):
     for char in msg_text:
         binary_char = format(ord(char), '08b')
         binary_text += binary_char
-
 
     return binary_text
 
@@ -112,7 +109,6 @@ def size_check(bmp_img, bin_msg):
         return 1
     else:
         return 0
-
 
 
 if __name__ == "__main__":

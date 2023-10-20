@@ -46,19 +46,23 @@ def hide_secret_message(bin_msg, bmp_img, encoded_img_name):
     # converts the bmp image into an array
     pixel_array = np.array(list(bmp_img.getdata()))
     width, height = bmp_img.size
-    image_directory = "../images/" + encoded_img_name + ".jpeg"
-    total_pixels = pixel_array.size // 3
 
+    # file and user inputted name for stego image saving
+    image_directory = "../images/" + encoded_img_name + ".jpeg"
+
+    # loops through each column of each row of pixels within the image
     index = 0
     for w in range(width):
         for h in range(height):
             pixel = list(bmp_img.getpixel((w, h)))
 
+            # Adjusts each R, G, B channel
             for RGB_channel in range(3):
                 if index < len(bin_msg):
                     msg_bit = int(bin_msg[index])
-
+                    # Finds the LSB by performing bitwise operation
                     pixel[RGB_channel] &= ~0x1
+                    # Bitwise operation OR with 0x1 to change LSB 
                     pixel[RGB_channel] |= msg_bit
 
                     index += 1

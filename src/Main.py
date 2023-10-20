@@ -1,5 +1,6 @@
 from PIL import Image
 import numpy as np
+import pathlib
 
 
 # Convert image to 24-bit BMP
@@ -23,6 +24,7 @@ def menu_option_1():
     bin_msg = convert_string_to_binary(secret_message)
     image = Image.open("../images/converted_image.bmp")
 
+
     if size_check(image, bin_msg) == 1:
         print("What do you want to save the stego image as?")
         encoded_img_name = input(" : ")
@@ -44,6 +46,7 @@ def hide_secret_message(bin_msg, bmp_img, encoded_img_name):
     # converts the bmp image into an array
     pixel_array = np.array(list(bmp_img.getdata()))
     width, height = bmp_img.size
+    image_directory = "../images/" + encoded_img_name + ".jpeg"
     total_pixels = pixel_array.size // 3
 
     index = 0
@@ -65,10 +68,11 @@ def hide_secret_message(bin_msg, bmp_img, encoded_img_name):
         pixel_array = pixel_array.reshape((height, width, 3))
         enc_img = Image.fromarray(np.uint8(pixel_array))
 
-        enc_img.save('../images/stegoimg.jpeg')
+        enc_img.save(image_directory)
 
 
-# Converts a text string into a binary string
+
+        # Converts a text string into a binary string
 def convert_string_to_binary(msg_text):
     binary_text = ''
     # Adding a delimiter

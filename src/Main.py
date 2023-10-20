@@ -26,8 +26,7 @@ def menu_option_1():
     if size_check(image, bin_msg) == 1:
         print("What do you want to save the stego image as?")
         encoded_img_name = input(" : ")
-
-
+        hide_secret_message(bin_msg, image, encoded_img_name)
 
     else:
         print("ERROR: Message too long, please try again")
@@ -45,34 +44,40 @@ def hide_secret_message(bin_msg, bmp_img, encoded_img_name):
     # converts the bmp image into an array
     pixel_array = np.array(list(bmp_img.getdata()))
     width, height = bmp_img.size
-    total_pixels = pixel_array.size//3
+    total_pixels = pixel_array.size // 3
 
     index = 0
-    for pixel in range(total_pixels):
-        for RGB in range(3):
-            if index < len(bin_msg):
-                msg_bit = int(bin_msg[index])
-                pixel[RGB] &= ~0x1
-                pixel[RGB] |= msg_bit
-                index += 1
-            else:
-                break
+    for w in range(width):
+        for h in range(height):
+            pixel = list(bmp_img.getpixel((w, h)))
+
+            for RGB_channel in range(3):
+                if index < len(bin_msg):
+                    msg_bit = int(bin_msg[index])
+
+                    pixel[RGB_channel] &= ~0x1
+                    pixel[RGB_channel] |= msg_bit
+
+                    index += 1
+                else:
+                    break
 
         pixel_array = pixel_array.reshape((height, width, 3))
-        enc_img = Image.fromarray(pixel_array.astype('uint8'))
+        enc_img = Image.fromarray(np.uint8(pixel_array))
 
-        enc_img.save('../images/stego_image.jpeg')
+        enc_img.save('../images/stegoimg.jpeg')
 
 
 # Converts a text string into a binary string
 def convert_string_to_binary(msg_text):
     binary_text = ''
+    # Adding a delimiter
+    msg_text += "$Hq73Op"
+
     for char in msg_text:
         binary_char = format(ord(char), '08b')
         binary_text += binary_char
 
-    # Adding a delimiter
-    binary_text += "$Hq73Op"
 
     return binary_text
 

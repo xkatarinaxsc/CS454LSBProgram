@@ -30,7 +30,7 @@ def menu_option_1():
 
 
     else:
-        print("Message too long, please try again")
+        print("ERROR: Message too long, please try again")
 
 
 
@@ -50,19 +50,15 @@ def hide_secret_message(bin_msg, bmp_img, encoded_img_name):
     total_pixels = pixel_array.size//3
 
     index = 0
-    for x in range(total_pixels):
-        for y in range(3):
+    for pixel in range(total_pixels):
+        for RGB in range(3):
             if index < len(bin_msg):
-                bit = int(bin_msg[index])
-
+                msg_bit = int(bin_msg[index])
+                pixel[RGB] &= ~0x1
+                pixel[RGB] |= msg_bit
                 index += 1
-
             else:
                 break
-
-
-
-
 
 
 # Converts a text string into a binary string

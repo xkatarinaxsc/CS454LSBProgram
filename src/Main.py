@@ -2,7 +2,6 @@ from PIL import Image
 import numpy as np
 
 
-
 # Convert image to 24-bit BMP
 def convert_to_bmp(image_path):
     # Open the image
@@ -47,7 +46,7 @@ def hide_secret_message(bin_msg, bmp_img, encoded_img_name):
     width, height = bmp_img.size
 
     # file and user inputted name for stego image saving
-    image_directory = "../images/" + encoded_img_name + ".jpeg"
+    image_directory = "../images/" + encoded_img_name + ".bmp"
 
     # loops through each column of each row of pixels within the image
     index = 0

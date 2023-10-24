@@ -13,6 +13,32 @@ def convert_to_bmp(image_path):
         img.save('../images/converted_image.bmp')
 
 
+# Extract the hidden message
+def extract_encrypted_message(stego_image_path):
+    # Open the stego-image
+    with Image.open(stego_image_path) as img:
+        pixel_array = np.array(list(img.getdata()))
+        width, height = img.size
+
+        # Extract the LSBs of the pixel channels to get binary message
+        binary_message = ''
+        for w in range(width):
+            for h in range(height):
+                r, g, b = img.getpixel((w, h))
+                binary_message += bin(r)[-1] + bin(g)[-1] + bin(b)[-1]
+
+        # Convert the binary message to text
+        hidden_message_including_delimiter = convert_binary_to_string(binary_message)
+
+        # Extract the actual hidden message by removing the delimiter
+        delimiter = "$Hq73Op"
+        if delimiter in hidden_message_including_delimiter:
+            hidden_message = hidden_message_including_delimiter.split(delimiter)[0]
+            return hidden_message
+        else:
+            return "No hidden message found or the delimiter is missing."
+
+
 # Encryption Menu Option
 def menu_option_1():
     print("Please input the secret message you want to encrypt: ")
@@ -36,6 +62,13 @@ def menu_option_1():
 def menu_option_2():
     print("File name for the stego image you want to decrypt: ")
     file_name = input("File Name: ")
+
+    # Building the path of the stego image
+    stego_image_path = "../images/" + file_name
+
+    # Extracting the hidden message
+    hidden_message = extract_secret_message(stego_image_path)
+    print("The hidden message is:", hidden_message)
 
 
 # LSB implementation to hide message within image

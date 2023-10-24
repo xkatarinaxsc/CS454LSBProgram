@@ -21,7 +21,13 @@ def menu_option_1():
     # does user pick img? via img path or name?
     convert_to_bmp('../images/image.jpeg')
     bin_msg = convert_string_to_binary(secret_message)
-    image = Image.open("../images/converted_image.bmp")
+
+    try:
+        image = Image.open("../images/converted_image.bmp")
+    except FileNotFoundError:
+        print("Image file not found.")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
     if size_check(image, bin_msg) == 1:
         print("What do you want to save the stego image as?")
@@ -40,37 +46,70 @@ def menu_option_2():
 
 # LSB implementation to hide message within image
 def hide_secret_message(bin_msg, bmp_img, encoded_img_name):
+    try:
 
-    # converts the bmp image into an array
-    pixel_array = np.array(list(bmp_img.getdata()))
-    width, height = bmp_img.size
+        # converts the bmp image into an array
+        pixel_array = np.array(list(bmp_img.getdata()))
+        width, height = bmp_img.size
 
-    # file and user inputted name for stego image saving
-    image_directory = "../images/" + encoded_img_name + ".bmp"
+        # file and user inputted name for stego image saving
+        image_directory = "../images/" + encoded_img_name + ".bmp"
 
-    # loops through each column of each row of pixels within the image
-    index = 0
-    for w in range(width):
-        for h in range(height):
-            pixel = list(bmp_img.getpixel((w, h)))
+        # loops through each column of each row of pixels within the image
+        index = 0
+        for w in range(width):
+            for h in range(height):
+                pixel = list(bmp_img.getpixel((w, h)))
 
-            # Adjusts each R, G, B channel
-            for RGB_channel in range(3):
-                if index < len(bin_msg):
-                    msg_bit = int(bin_msg[index])
-                    # Finds the LSB by performing bitwise operation
-                    pixel[RGB_channel] &= ~0x1
-                    # Bitwise operation OR with 0x1 to change LSB
-                    pixel[RGB_channel] |= msg_bit
+                # Adjusts each R, G, B channel
+                for RGB_channel in range(3):
+                    if index < len(bin_msg):
+                        msg_bit = int(bin_msg[index])
+                        # Finds the LSB by performing bitwise operation
+                        pixel[RGB_channel] &= ~0x1
+                        # Bitwise operation OR with 0x1 to change LSB
+                        pixel[RGB_channel] |= msg_bit
 
-                    index += 1
-                else:
-                    break
+                        index += 1
+                    else:
+                        break
 
-        pixel_array = pixel_array.reshape((height, width, 3))
-        enc_img = Image.fromarray(np.uint8(pixel_array))
+                bmp_img.putpixel((w, h), tuple(pixel))
 
-        enc_img.save(image_directory)
+        bmp_img.save(image_directory)
+        
+    except (IOError, KeyError) as e:
+        print(f"Error saving the image: {e}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+
+# Extract the hidden message
+def extract_encrypted_message(stego_image_path):
+    # Open the stego-image
+    with Image.open(stego_image_path) as img:
+        pixel_array = np.array(list(img.getdata()))
+        width, height = img.size
+
+        # Extract the LSBs of the pixel channels to get binary message
+        binary_message = ''
+        for w in range(width):
+            for h in range(height):
+
+                r, g, b = img.getpixel((w, h))
+                binary_message += bin(r)[-1] + bin(g)[-1] + bin(b)[-1]
+
+        # Convert the binary message to text
+        hidden_message_including_delimiter = convert_binary_to_string(binary_message)
+
+        # Extract the actual hidden message by removing the delimiter
+        delimiter = "$Hq73Op"
+        if delimiter in hidden_message_including_delimiter:
+            hidden_message = hidden_message_including_delimiter.split(delimiter)[0]
+            return hidden_message
+        else:
+            return "No hidden message found or the delimiter is missing."
+
 
 
 # Converts a text string into a binary string

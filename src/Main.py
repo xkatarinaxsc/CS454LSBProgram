@@ -77,7 +77,7 @@ def hide_secret_message(bin_msg, bmp_img, encoded_img_name):
                 bmp_img.putpixel((w, h), tuple(pixel))
 
         bmp_img.save(image_directory)
-        
+
     except (IOError, KeyError) as e:
         print(f"Error saving the image: {e}")
     except Exception as e:

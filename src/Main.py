@@ -43,6 +43,13 @@ def menu_option_2():
     print("File name for the stego image you want to decrypt: ")
     file_name = input("File Name: ")
 
+  # Building the path of the stego image
+    stego_image_path = "../images/" + file_name
+
+    # Extracting the hidden message
+    hidden_message = extract_encrypted_message(stego_image_path)
+    print("The hidden message is:", hidden_message)
+
 
 # LSB implementation to hide message within image
 def hide_secret_message(bin_msg, bmp_img, encoded_img_name):
@@ -111,7 +118,6 @@ def extract_encrypted_message(stego_image_path):
             return "No hidden message found or the delimiter is missing."
 
 
-
 # Converts a text string into a binary string
 def convert_string_to_binary(msg_text):
     binary_text = ''
@@ -160,6 +166,7 @@ if __name__ == "__main__":
         choice = input(" :  ")
 
         if choice == "1":
+            #test_method()
             menu_option_1()
         elif choice == "2":
             menu_option_2()

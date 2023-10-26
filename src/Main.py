@@ -37,11 +37,9 @@ def menu_option_1():
         print("What do you want to save the stego image as?")
         encoded_img_name = input(" : ")
         hide_secret_message(bin_msg, image, encoded_img_name)
-        print(f"Success! Image saved as {encoded_img_name}.bmp")
-
+        print(f"Success! Image saved as{encoded_img_name}.bmp")
     else:
         print("ERROR: Message too long, please try again")
-
 
 
 # Decryption Menu Option

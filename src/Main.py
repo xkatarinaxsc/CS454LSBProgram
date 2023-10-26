@@ -21,12 +21,13 @@ def menu_option_1():
     print("Please input the secret message you want to encrypt: ")
     secret_message = input("Message: ")
 
-    # does user pick img? via img path or name?
-    convert_to_bmp('../images/image.jpeg')
-    bin_msg = convert_string_to_binary(secret_message)
-
     try:
+        # Converts jpeg cover image to a bitmap image
+        convert_to_bmp('../images/image.jpeg')
         image = Image.open("../images/converted_image.bmp")
+        # Converts user input string to binary form
+        bin_msg = convert_string_to_binary(secret_message)
+
     except FileNotFoundError:
         print("Image file not found.")
     except Exception as e:
@@ -36,7 +37,7 @@ def menu_option_1():
         print("What do you want to save the stego image as?")
         encoded_img_name = input(" : ")
         hide_secret_message(bin_msg, image, encoded_img_name)
-        print("Success! ")
+        print(f"Success! Image saved as {encoded_img_name}.bmp")
 
     else:
         print("ERROR: Message too long, please try again")
@@ -45,7 +46,7 @@ def menu_option_1():
 
 # Decryption Menu Option
 def menu_option_2():
-    print("File name for the stego image you want to decrypt: ")
+    print("File name for the stego image you want to decrypt (make sure to include the file extension)")
     file_name = input("File Name: ")
 
     # Building the path of the stego image
@@ -65,7 +66,6 @@ def menu_option_2():
 # LSB implementation to hide message within image
 def hide_secret_message(bin_msg, bmp_img, encoded_img_name):
     try:
-
         # converts the bmp image into an array
         # pixel_array = np.array(list(bmp_img.getdata()))
         width, height = bmp_img.size
@@ -97,8 +97,12 @@ def hide_secret_message(bin_msg, bmp_img, encoded_img_name):
         bmp_img.save(image_directory)
 
     except (IOError, KeyError) as e:
+        # deletes partially created stego image
+        os.remove(image_directory)
         print(f"Error saving the image: {e}")
     except Exception as e:
+        # deletes partially created stego image
+        os.remove(image_directory)
         print(f"An error occurred: {e}")
 
 
@@ -145,6 +149,7 @@ def convert_string_to_binary(msg_text):
 # Converts a binary string into a text string
 def convert_binary_to_string(binary_msg):
     msg_text = ""
+
     for i in range(0, len(binary_msg), 8):
         temp_bin = binary_msg[i:i + 8]
         decimal_value = int(temp_bin, 2)
@@ -165,9 +170,9 @@ def size_check(bmp_img, bin_msg):
     else:
         return 0
 
-
 if __name__ == "__main__":
 
+    # Main Menu - program runs until the user exits or the program is externally stopped
     while True:
         print("\nMenu : ")
         print("1. Encrypt a secret message within an image")
@@ -177,7 +182,6 @@ if __name__ == "__main__":
         choice = input(" :  ")
 
         if choice == "1":
-            #test_method()
             menu_option_1()
         elif choice == "2":
             menu_option_2()

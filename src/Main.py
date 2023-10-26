@@ -154,7 +154,7 @@ def convert_binary_to_string(binary_msg):
 # Check the string will fit into the image
 def size_check(bmp_img, bin_msg):
     width, height = bmp_img.size
-    total_pixels = width * height
+    total_pixels = width * height * 3
 
     req_pixels = len(bin_msg)
 

@@ -1,5 +1,6 @@
 from PIL import Image
 import numpy as np
+import os
 
 
 # Convert image to 24-bit BMP
@@ -46,12 +47,17 @@ def menu_option_2():
     file_name = input("File Name: ")
 
     # Building the path of the stego image
-
     stego_image_path = "../images/" + file_name
 
-    # Extracting the hidden message
-    hidden_message = extract_encrypted_message(stego_image_path)
-    print("The hidden message is:", hidden_message)
+    if os.path.exists(stego_image_path):
+        # Extracting the hidden message
+        hidden_message = extract_encrypted_message(stego_image_path)
+        print("The hidden message is:", hidden_message)
+    else:
+        print(f"ERROR: {file_name} does not exist in folder, check you have spelled the name correctly and the image is "
+              f"saved within the folder")
+
+
 
 
 # LSB implementation to hide message within image

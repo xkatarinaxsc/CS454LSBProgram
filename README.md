@@ -16,8 +16,8 @@ move the project into your desired directory. From here open your terminal withi
 OR, if using command prompt, command line prompt (CMD) from the directory and change your 
 working directory to the project's root folder. 
 
-To run the project from the Git Bash terminal, navigate to the src folder and open git bash
-then use the command "python main.py"
+Once you have the neccessary requirements installed, to run the project from the Git 
+Bash terminal, navigate to the src folder and open git bash then use the command "python main.py"
 
 
 #User Guide 

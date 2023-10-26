@@ -46,6 +46,7 @@ def menu_option_2():
     file_name = input("File Name: ")
 
     # Building the path of the stego image
+
     stego_image_path = "../images/" + file_name
 
     # Extracting the hidden message
@@ -120,7 +121,6 @@ def extract_encrypted_message(stego_image_path):
             return "No hidden message found or the delimiter is missing."
 
 
-
 # Converts a text string into a binary string
 def convert_string_to_binary(msg_text):
     binary_text = ''
@@ -169,6 +169,7 @@ if __name__ == "__main__":
         choice = input(" :  ")
 
         if choice == "1":
+            #test_method()
             menu_option_1()
         elif choice == "2":
             menu_option_2()

@@ -45,7 +45,7 @@ def menu_option_1():
 
 # Decryption Menu Option
 def menu_option_2():
-    print("File name for the stego image you want to decrypt: ")
+    print("File name for the stego image you want to decrypt (make sure to include the file extension )")
     file_name = input("File Name: ")
 
     # Building the path of the stego image

@@ -8,6 +8,8 @@ Created: 15/10/2023
 
 Authors: Katarina Scott, Alexander Quinn
 
+Python Version: 3.7 or higher
+
 #Installation
 Firstly assuming you have already unzipped the file with this project in it,
 move the project into your desired directory. From here open your terminal within Pycharm 

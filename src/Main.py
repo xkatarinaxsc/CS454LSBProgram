@@ -65,7 +65,6 @@ def menu_option_2():
 # LSB implementation to hide message within image
 def hide_secret_message(bin_msg, bmp_img, encoded_img_name):
     try:
-
         # converts the bmp image into an array
         # pixel_array = np.array(list(bmp_img.getdata()))
         width, height = bmp_img.size
@@ -145,6 +144,7 @@ def convert_string_to_binary(msg_text):
 # Converts a binary string into a text string
 def convert_binary_to_string(binary_msg):
     msg_text = ""
+
     for i in range(0, len(binary_msg), 8):
         temp_bin = binary_msg[i:i + 8]
         decimal_value = int(temp_bin, 2)
@@ -168,6 +168,7 @@ def size_check(bmp_img, bin_msg):
 
 if __name__ == "__main__":
 
+    # Main Menu - program runs until the user exits or the program is externally stopped
     while True:
         print("\nMenu : ")
         print("1. Encrypt a secret message within an image")
@@ -177,7 +178,6 @@ if __name__ == "__main__":
         choice = input(" :  ")
 
         if choice == "1":
-            #test_method()
             menu_option_1()
         elif choice == "2":
             menu_option_2()

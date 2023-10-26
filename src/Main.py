@@ -33,9 +33,11 @@ def menu_option_1():
         print("What do you want to save the stego image as?")
         encoded_img_name = input(" : ")
         hide_secret_message(bin_msg, image, encoded_img_name)
+        print("Success! ")
 
     else:
         print("ERROR: Message too long, please try again")
+
 
 
 # Decryption Menu Option
@@ -43,13 +45,20 @@ def menu_option_2():
     print("File name for the stego image you want to decrypt: ")
     file_name = input("File Name: ")
 
+    # Building the path of the stego image
+    stego_image_path = "../images/" + file_name
+
+    # Extracting the hidden message
+    hidden_message = extract_encrypted_message(stego_image_path)
+    print("The hidden message is:", hidden_message)
+
 
 # LSB implementation to hide message within image
 def hide_secret_message(bin_msg, bmp_img, encoded_img_name):
     try:
 
         # converts the bmp image into an array
-        pixel_array = np.array(list(bmp_img.getdata()))
+        # pixel_array = np.array(list(bmp_img.getdata()))
         width, height = bmp_img.size
 
         # file and user inputted name for stego image saving
